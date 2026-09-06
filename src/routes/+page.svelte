@@ -4,6 +4,7 @@
   import CardSearch from "$lib/components/CardSearch.svelte";
   import CardUrlInput from "$lib/components/CardUrlInput.svelte";
   import PrintQueue from "$lib/components/PrintQueue.svelte";
+  import ErrorToast from "$lib/components/ErrorToast.svelte";
 
   let queue: CardSummary[] = [];
   let status = "";
@@ -96,7 +97,7 @@
   <CardUrlInput {busy} onadd={addUrl} />
   <PrintQueue cards={queue} {busy} onremove={(index) => (queue = queue.filter((_, i) => i !== index))} onprint={print} />
   <p class="status" aria-live="polite">{status}</p>
-  {#if error}<p class="error" role="alert">{error}</p>{/if}
+  {#if error}<ErrorToast message={error} onclose={() => (error = "")} />{/if}
 </main>
 
 <style>
@@ -162,10 +163,6 @@
   }
   .status {
     min-height: 1.4em;
-    font-weight: 600;
-  }
-  .error {
-    color: #9b1c1c;
     font-weight: 600;
   }
 </style>
