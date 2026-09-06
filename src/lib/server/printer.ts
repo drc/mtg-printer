@@ -7,10 +7,7 @@ import { CARD_HEIGHT, CARD_WIDTH, renderCard } from "./render-card.js";
 export const PRINTER_HOST = "10.0.1.128";
 export const PRINTER_PORT = 9100;
 let queue: Promise<void> = Promise.resolve();
-const printerCanvas = createCanvas as unknown as (
-  width: number,
-  height: number,
-) => HTMLCanvasElement;
+const printerCanvas = createCanvas as unknown as (width: number, height: number) => HTMLCanvasElement;
 
 function send(data: Uint8Array): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -47,11 +44,7 @@ export async function printCard(card: CardRecord): Promise<void> {
     feedBeforeCut: 5,
     imageMode: "raster",
   });
-  const data = encoder
-    .align("center")
-    .image(image, CARD_WIDTH, CARD_HEIGHT, "atkinson")
-    .cut()
-    .encode();
+  const data = encoder.align("center").image(image, CARD_WIDTH, CARD_HEIGHT, "atkinson").cut().encode();
   await send(data);
 }
 export function enqueuePrint(cards: CardRecord[]): Promise<void> {

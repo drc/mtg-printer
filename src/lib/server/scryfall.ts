@@ -1,8 +1,4 @@
-import {
-  CardPayload,
-  SearchPayload,
-  type CardPayload as CardPayloadType,
-} from "./scryfall.schemas";
+import { CardPayload, SearchPayload, type CardPayload as CardPayloadType } from "./scryfall.schemas";
 
 export type CardSummary = {
   id: string;
@@ -61,9 +57,7 @@ export async function searchCards(query: string): Promise<CardSummary[]> {
   if (!clean) {
     return [];
   }
-  const parsed = SearchPayload.safeParse(
-    await request(`/cards/search?q=${encodeURIComponent(clean)}&unique=prints&order=name`),
-  );
+  const parsed = SearchPayload.safeParse(await request(`/cards/search?q=${encodeURIComponent(clean)}&unique=prints&order=name`));
   if (!parsed.success) {
     throw new Error("Scryfall returned malformed search results");
   }
@@ -84,21 +78,14 @@ export async function resolveCardUrl(value: string): Promise<CardRecord> {
   } catch {
     throw new Error("Enter a valid Scryfall card URL");
   }
-  if (
-    parsed.protocol !== "https:" ||
-    !["scryfall.com", "www.scryfall.com"].includes(parsed.hostname)
-  ) {
+  if (parsed.protocol !== "https:" || !["scryfall.com", "www.scryfall.com"].includes(parsed.hostname)) {
     throw new Error("Only scryfall.com card links are supported");
   }
   const match = parsed.pathname.match(/^\/card\/([^/]+)\/([^/]+)(?:\/[^/]*)?\/?$/i);
   if (!match) {
-    throw new Error(
-      "Use a Scryfall card link such as https://scryfall.com/card/slz/3/eerie-interlude",
-    );
+    throw new Error("Use a Scryfall card link such as https://scryfall.com/card/slz/3/eerie-interlude");
   }
-  return normalize(
-    await requestCard(`/cards/${encodeURIComponent(match[1])}/${encodeURIComponent(match[2])}`),
-  );
+  return normalize(await requestCard(`/cards/${encodeURIComponent(match[1])}/${encodeURIComponent(match[2])}`));
 }
 
 export async function fetchCardImage(card: CardRecord): Promise<Uint8Array> {
@@ -112,9 +99,7 @@ export async function fetchCardImage(card: CardRecord): Promise<Uint8Array> {
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 export async function resolveCardNames(names: string[]): Promise<CardRecord[]> {
-  const clean = names
-    .map((name, index) => ({ name: name.trim(), line: index + 1 }))
-    .filter((entry) => entry.name);
+  const clean = names.map((name, index) => ({ name: name.trim(), line: index + 1 })).filter((entry) => entry.name);
   const cards: CardRecord[] = [];
   for (let index = 0; index < clean.length; index += 1) {
     if (index) {
@@ -122,13 +107,9 @@ export async function resolveCardNames(names: string[]): Promise<CardRecord[]> {
     }
     const entry = clean[index];
     try {
-      cards.push(
-        normalize(await requestCard(`/cards/named?fuzzy=${encodeURIComponent(entry.name)}`)),
-      );
+      cards.push(normalize(await requestCard(`/cards/named?fuzzy=${encodeURIComponent(entry.name)}`)));
     } catch (error) {
-      throw new Error(
-        `Could not resolve line ${entry.line} (${entry.name}): ${error instanceof Error ? error.message : "unknown error"}`,
-      );
+      throw new Error(`Could not resolve line ${entry.line} (${entry.name}): ${error instanceof Error ? error.message : "unknown error"}`);
     }
   }
   return cards;

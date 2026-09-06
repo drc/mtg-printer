@@ -24,9 +24,6 @@ export const POST: RequestHandler = async ({ request }) => {
     await enqueuePrint(cards);
     return json({ printed: cards.length });
   } catch (error) {
-    return json(
-      { error: error instanceof Error ? error.message : "Print failed" },
-      { status: 502 },
-    );
+    return json({ error: error instanceof Error ? error.message : "Print failed" }, { status: 502 });
   }
 };

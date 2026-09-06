@@ -1,5 +1,7 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "ignorePatterns": [],
-  "svelte": true
+  "svelte": true,
+  "bracketSameLine": true,
+  "printWidth": 200
 }

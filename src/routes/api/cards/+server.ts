@@ -10,22 +10,13 @@ export const GET: RequestHandler = async ({ url }) => {
   try {
     return json({ cards: await searchCards(query) });
   } catch (error) {
-    return json(
-      { error: error instanceof Error ? error.message : "Card search failed" },
-      { status: 502 },
-    );
+    return json({ error: error instanceof Error ? error.message : "Card search failed" }, { status: 502 });
   }
 };
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const body: unknown = await request.json();
-    if (
-      body &&
-      typeof body === "object" &&
-      "url" in body &&
-      typeof body.url === "string" &&
-      body.url.trim()
-    ) {
+    if (body && typeof body === "object" && "url" in body && typeof body.url === "string" && body.url.trim()) {
       return json({ cards: [await resolveCardUrl(body.url)] });
     }
     if (
@@ -39,9 +30,6 @@ export const POST: RequestHandler = async ({ request }) => {
     }
     return json({ cards: await resolveCardNames((body as { names: string[] }).names) });
   } catch (error) {
-    return json(
-      { error: error instanceof Error ? error.message : "Card resolution failed" },
-      { status: 502 },
-    );
+    return json({ error: error instanceof Error ? error.message : "Card resolution failed" }, { status: 502 });
   }
 };
