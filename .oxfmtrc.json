@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [],
+  "ignorePatterns": ["MTG_PROXY_PRINTER_PLAN.md"],
   "svelte": true,
   "bracketSameLine": true,
   "printWidth": 200
