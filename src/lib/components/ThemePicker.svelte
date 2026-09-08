@@ -33,6 +33,7 @@
       <button
         type="button"
         class:active={theme === option}
+        data-theme-option={option}
         aria-pressed={theme === option}
         onclick={() => applyTheme(option as Theme)}>
         {option[0].toUpperCase() + option.slice(1)}
@@ -64,10 +65,18 @@
     font: inherit;
     font-size: 0.85rem;
   }
-  button.active {
+  button.active,
+  :global(:root[data-theme="light"]) button[data-theme-option="light"],
+  :global(:root[data-theme="dark"]) button[data-theme-option="dark"] {
     background: var(--surface);
     box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
     color: var(--text);
     font-weight: 700;
+  }
+  :global(:root[data-theme]) button[data-theme-option="system"].active {
+    background: transparent;
+    box-shadow: none;
+    color: var(--muted);
+    font-weight: 400;
   }
 </style>
