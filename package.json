@@ -1,5 +1,6 @@
 {
   "name": "mtg-proxy-printer",
+  "description": "Local Magic: The Gathering proxy printer with Scryfall search and ESC/POS output.",
   "private": true,
   "type": "module",
   "scripts": {
