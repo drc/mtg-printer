@@ -39,7 +39,7 @@
     font: inherit;
   }
   .select:hover {
-    background: #f0eee9;
+    background: var(--surface-muted);
   }
   img,
   .image-fallback {
@@ -51,29 +51,30 @@
   .image-fallback {
     display: grid;
     place-items: center;
-    background: #eee;
-    color: #555;
+    background: var(--surface-muted);
+    color: var(--muted);
     font-size: 0.7rem;
     text-align: center;
   }
   small {
     display: block;
-    color: #5f6368;
+    color: var(--muted);
   }
   .remove {
     margin-left: 1.5rem;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
-    border: 1px solid #777;
+    border: 1px solid var(--field-border);
     border-radius: 4px;
-    background: #fff;
+    background: var(--surface-muted);
+    color: var(--text);
   }
   .price {
     flex: 0 0 5.5rem;
     margin-left: auto;
     text-align: right;
     font-weight: 600;
-    color: #2e7d32;
+    color: var(--success);
     font-size: 0.95rem;
     font-variant-numeric: tabular-nums;
   }
