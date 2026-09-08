@@ -4,8 +4,8 @@ import ReceiptPrinterEncoder from "@point-of-sale/receipt-printer-encoder";
 import { fetchCardImage, type CardRecord } from "./scryfall.js";
 import { CARD_HEIGHT, CARD_WIDTH, renderCard } from "./render-card.js";
 
-export const PRINTER_HOST = "10.0.1.128";
-export const PRINTER_PORT = 9100;
+export const PRINTER_HOST = process.env.PRINTER_HOST ?? "10.0.1.128";
+export const PRINTER_PORT = Number(process.env.PRINTER_PORT ?? 9100);
 let queue: Promise<void> = Promise.resolve();
 const printerCanvas = createCanvas as unknown as (width: number, height: number) => HTMLCanvasElement;
 
