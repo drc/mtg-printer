@@ -8,8 +8,15 @@
 
   let queue: CardSummary[] = [];
   let status = "";
-  let error = "";
   let busy = false;
+  let error = "";
+  function formatCartTotal(cards: CardSummary[]): string {
+    const total = cards.reduce((sum, card) => {
+      const price = parseFloat(card.price ?? "0");
+      return sum + (isNaN(price) ? 0 : price);
+    }, 0);
+    return total === 0 ? "—" : `$${total.toFixed(2)}`;
+  }
 
   function add(card: CardSummary) {
     queue = [...queue, card];
@@ -60,9 +67,10 @@
   }
 
   async function print() {
+    const discount = formatCartTotal(queue);
     busy = true;
     error = "";
-    status = "Printing…";
+    status = `Printing… discount: ${discount}; total: $0.00.`;
     try {
       const response = await fetch("/api/print", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ids: queue.map((card) => card.id) }) });
       const body = await response.json();
@@ -70,7 +78,7 @@
         throw new Error(body.error ?? "Print failed");
       }
       queue = [];
-      status = `Printed ${body.printed} card(s).`;
+      status = `Printed ${body.printed} card(s). Discount: ${discount}; total: $0.00.`;
     } catch (cause) {
       error = cause instanceof Error ? cause.message : "Print failed";
       status = "";
@@ -95,6 +103,9 @@
     }} />
   <CardListInput {busy} onadd={addList} />
   <CardUrlInput {busy} onadd={addUrl} />
+  {#if queue.length}
+    <p class="cart-total" aria-live="polite"><span class="discount">Discount: {formatCartTotal(queue)}</span><span class="final-total">Total: $0.00</span></p>
+  {/if}
   <PrintQueue cards={queue} {busy} onremove={(index) => (queue = queue.filter((_, i) => i !== index))} onprint={print} />
   <p class="status" aria-live="polite">{status}</p>
   {#if error}<ErrorToast message={error} onclose={() => (error = "")} />{/if}
@@ -117,9 +128,30 @@
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
   }
-  h1 {
-    margin-bottom: 2rem;
-  }
+h1 {
+  margin-bottom: 2rem;
+}
+.cart-total {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.discount {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 700;
+}
+.final-total {
+  color: #166534;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
   :global(section) {
     background: white;
     border: 1px solid #d8d2c6;
@@ -138,6 +170,7 @@
   }
   :global(input),
   :global(textarea) {
+    display: block;
     width: 100%;
     padding: 0.65rem;
     border: 1px solid #aaa;
@@ -145,6 +178,7 @@
     font: inherit;
   }
   :global(section > form button) {
+    margin-top: 0.75rem;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
     border: 1px solid #777;

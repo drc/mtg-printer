@@ -6,6 +6,13 @@
   export let busy = false;
   export let onremove: (index: number) => void;
   export let onprint: () => void;
+  function formatTotal(cards: CardSummary[]): string {
+    const total = cards.reduce((sum, card) => {
+      const price = parseFloat(card.price ?? "0");
+      return sum + (isNaN(price) ? 0 : price);
+    }, 0);
+    return total === 0 ? "—" : `$${total.toFixed(2)}`;
+  }
   function remove(index: number) {
     onremove(index);
     requestAnimationFrame(() => document.querySelector<HTMLButtonElement>(".remove")?.focus());
@@ -24,7 +31,8 @@
   {:else}
     <p>No cards queued.</p>
   {/if}
-  <button class="print" onclick={onprint} disabled={busy || !cards.length}>Print queue</button>
+  <p class="summary" aria-live="polite"><span class="discount">Discount: {formatTotal(cards)}</span><span class="total">Total: $0.00</span></p>
+  <button class="print" onclick={onprint} disabled={busy || !cards.length}>{busy ? "Printing…" : "Print queue"}</button>
 </section>
 
 <style>
@@ -36,19 +44,40 @@
   .queue li + li {
     border-top: 1px solid #eee;
   }
-  .print {
-    margin-top: 1rem;
-    width: 100%;
-    cursor: pointer;
-    padding: 0.55rem 0.8rem;
-    border: 1px solid #777;
-    border-radius: 4px;
-    background: #17202a;
-    color: white;
+.print {
+  margin-top: 1rem;
+  width: 100%;
+  cursor: pointer;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #777;
+  border-radius: 4px;
+  background: #17202a;
+  color: white;
+}
+.print:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+  .summary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0 0;
+    font-variant-numeric: tabular-nums;
   }
-  .print:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+  .discount {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid #f59e0b;
+    border-radius: 999px;
+    background: #fffbeb;
+    color: #92400e;
+    font-weight: 700;
+  }
+  .total {
+    color: #166534;
+    font-size: 1.1rem;
+    font-weight: 800;
   }
   .sr-only {
     position: absolute;

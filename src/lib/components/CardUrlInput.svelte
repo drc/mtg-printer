@@ -14,6 +14,7 @@
 <section aria-labelledby="link-heading">
   <h2 id="link-heading">Add a card link</h2>
   <form
+    class="link-form"
     onsubmit={(event) => {
       event.preventDefault();
       submit();
@@ -22,4 +23,5 @@
     <input bind:this={input} id="card-url" bind:value={url} type="url" placeholder="https://scryfall.com/card/slz/3/eerie-interlude" />
     <button type="submit" disabled={busy || !url.trim()}>Add card</button>
   </form>
+
 </section>
