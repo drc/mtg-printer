@@ -29,10 +29,9 @@ function normalize(card: CardPayloadType): CardRecord {
     name: card.name,
     set: card.set,
     set_name: card.set_name,
-    collector_number: card.collector_number,
+    price: card.prices?.usd ?? undefined,
     layout: card.layout,
     image_url,
-    price: card.prices?.usd,
   };
 }
 
