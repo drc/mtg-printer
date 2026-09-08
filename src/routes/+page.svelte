@@ -170,6 +170,7 @@ h1 {
   }
   :global(input),
   :global(textarea) {
+    display: block;
     width: 100%;
     padding: 0.65rem;
     border: 1px solid #aaa;
