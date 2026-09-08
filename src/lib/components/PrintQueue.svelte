@@ -31,7 +31,8 @@
   {:else}
     <p>No cards queued.</p>
   {/if}
-  <p class="total" aria-live="polite">Estimated resale value: {formatTotal(cards)}</p>
+  <p class="discount" aria-live="polite">Discount: {formatTotal(cards)}</p>
+  <p class="total" aria-live="polite">Total: $0.00</p>
   <button class="print" onclick={onprint} disabled={busy || !cards.length}>{busy ? "Printing…" : "Print queue"}</button>
 </section>
 
@@ -58,8 +59,12 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
+.discount {
+  margin: 0.75rem 0 0;
+  text-align: right;
+}
 .total {
-  margin-top: 0.75rem;
+  margin: 0.15rem 0 0;
   font-weight: 600;
   text-align: right;
   color: #2e7d32;
