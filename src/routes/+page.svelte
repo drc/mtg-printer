@@ -8,7 +8,7 @@
 
   let queue: CardSummary[] = [];
   let status = "";
-  let error = "";
+  let busy = false;
   function formatCartTotal(cards: CardSummary[]): string {
     const total = cards.reduce((sum, card) => {
       const price = parseFloat(card.price ?? "0");
