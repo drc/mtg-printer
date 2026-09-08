@@ -8,6 +8,7 @@ export type CardSummary = {
   collector_number: string;
   layout: string;
   image_url: string;
+  preview_url: string;
   price: string | undefined;
 };
 export type CardRecord = CardSummary;
@@ -17,6 +18,10 @@ const USER_AGENT = "mtg-proxy-printer/1.0 (local LAN printer)";
 
 function imageUrl(card: CardPayloadType): string | undefined {
   return card.image_uris?.png ?? card.card_faces?.[0]?.image_uris?.png;
+}
+
+function previewImageUrl(card: CardPayloadType): string | undefined {
+  return card.image_uris?.small ?? card.card_faces?.[0]?.image_uris?.small;
 }
 
 function normalize(card: CardPayloadType): CardRecord {
@@ -32,6 +37,7 @@ function normalize(card: CardPayloadType): CardRecord {
     price: card.prices?.usd ?? undefined,
     layout: card.layout,
     image_url,
+    preview_url: previewImageUrl(card) ?? image_url, 
   };
 }
 

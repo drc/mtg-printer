@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ImageUris = z.object({ png: z.url().optional() });
+export const ImageUris = z.object({ png: z.url().optional(), small: z.url().optional() });
 
 export const CardPayload = z.object({
   id: z.string(),

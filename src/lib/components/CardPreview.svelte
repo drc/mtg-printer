@@ -9,12 +9,12 @@
 
 {#if mode === "select"}
   <button class="card-preview select" {onclick}>
-    {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.image_url} alt="" onerror={() => (imageFailed = true)} />{/if}
+    {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.preview_url} alt="" loading="lazy" decoding="async" onerror={() => (imageFailed = true)} />{/if}
     <span>{card.name}<small>{card.set.toUpperCase()} · {card.set_name} · #{card.collector_number}</small></span>
   </button>
 {:else}
   <div class="card-preview">
-    {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.image_url} alt={card.name} onerror={() => (imageFailed = true)} />{/if}
+    {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.preview_url} alt={card.name} loading="lazy" decoding="async" onerror={() => (imageFailed = true)} />{/if}
     <span>{card.name}<small>{card.set_name} · {card.collector_number}</small></span>
     {#if card.price}<span class="price">${card.price}</span>{/if}
     <button class="remove" aria-label={`Remove ${card.name}`} {onclick}>Remove</button>
