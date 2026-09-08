@@ -67,9 +67,10 @@
   }
 
   async function print() {
+    const estimatedValue = formatCartTotal(queue);
     busy = true;
     error = "";
-    status = "Printing… your total is about to become $0.00.";
+    status = `Printing… estimated resale value: ${estimatedValue}; print cost: $0.00.`;
     try {
       const response = await fetch("/api/print", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ids: queue.map((card) => card.id) }) });
       const body = await response.json();
@@ -77,7 +78,7 @@
         throw new Error(body.error ?? "Print failed");
       }
       queue = [];
-      status = `Printed ${body.printed} card(s). Cost: $0.00. The printer accepts jokes as payment.`;
+      status = `Printed ${body.printed} card(s). Print cost: $0.00; estimated resale value: ${estimatedValue}.`;
     } catch (cause) {
       error = cause instanceof Error ? cause.message : "Print failed";
       status = "";
@@ -101,9 +102,8 @@
       status = "";
     }} />
   <CardListInput {busy} onadd={addList} />
-  <CardUrlInput {busy} onadd={addUrl} />
   {#if queue.length}
-    <p class="cart-total" aria-live="polite">Cart total: {formatCartTotal(queue)}</p>
+    <p class="cart-total" aria-live="polite">Estimated resale value: {formatCartTotal(queue)}</p>
   {/if}
   <PrintQueue cards={queue} {busy} onremove={(index) => (queue = queue.filter((_, i) => i !== index))} onprint={print} />
   <p class="status" aria-live="polite">{status}</p>
