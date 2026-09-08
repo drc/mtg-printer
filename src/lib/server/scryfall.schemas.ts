@@ -11,6 +11,7 @@ export const CardPayload = z.object({
   layout: z.string(),
   image_uris: ImageUris.optional(),
   card_faces: z.array(z.object({ image_uris: ImageUris.optional() })).optional(),
+  prices: z.record(z.string(), z.string()).optional(),
 });
 
 export const SearchPayload = z.object({ data: z.array(CardPayload) });

@@ -16,6 +16,7 @@
   <div class="card-preview">
     {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.image_url} alt={card.name} onerror={() => (imageFailed = true)} />{/if}
     <span>{card.name}<small>{card.set_name} · {card.collector_number}</small></span>
+    {#if card.price}<span class="price">${card.price}</span>{/if}
     <button class="remove" aria-label={`Remove ${card.name}`} {onclick}>Remove</button>
   </div>
 {/if}
@@ -66,4 +67,10 @@
     border-radius: 4px;
     background: #fff;
   }
+.price {
+  margin-left: auto;
+  font-weight: 600;
+  color: #2e7d32;
+  font-size: 0.85rem;
+}
 </style>

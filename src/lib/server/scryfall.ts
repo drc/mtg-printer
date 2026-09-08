@@ -8,6 +8,7 @@ export type CardSummary = {
   collector_number: string;
   layout: string;
   image_url: string;
+  price: string | undefined;
 };
 export type CardRecord = CardSummary;
 
@@ -31,6 +32,7 @@ function normalize(card: CardPayloadType): CardRecord {
     collector_number: card.collector_number,
     layout: card.layout,
     image_url,
+    price: card.prices?.usd,
   };
 }
 

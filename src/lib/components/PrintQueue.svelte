@@ -4,8 +4,14 @@
 
   export let cards: CardSummary[] = [];
   export let busy = false;
-  export let onremove: (index: number) => void;
   export let onprint: () => void;
+  function formatTotal(cards: CardSummary[]): string {
+    const total = cards.reduce((sum, card) => {
+      const price = parseFloat(card.price ?? "0");
+      return sum + (isNaN(price) ? 0 : price);
+    }, 0);
+    return total === 0 ? "—" : `$${total.toFixed(2)}`;
+  }
   function remove(index: number) {
     onremove(index);
     requestAnimationFrame(() => document.querySelector<HTMLButtonElement>(".remove")?.focus());
@@ -24,6 +30,7 @@
   {:else}
     <p>No cards queued.</p>
   {/if}
+  <p class="total" aria-live="polite">Total: {formatTotal(cards)}</p>
   <button class="print" onclick={onprint} disabled={busy || !cards.length}>Print queue</button>
 </section>
 
@@ -36,20 +43,27 @@
   .queue li + li {
     border-top: 1px solid #eee;
   }
-  .print {
-    margin-top: 1rem;
-    width: 100%;
-    cursor: pointer;
-    padding: 0.55rem 0.8rem;
-    border: 1px solid #777;
-    border-radius: 4px;
-    background: #17202a;
-    color: white;
-  }
-  .print:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
+.print {
+  margin-top: 1rem;
+  width: 100%;
+  cursor: pointer;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #777;
+  border-radius: 4px;
+  background: #17202a;
+  color: white;
+}
+.print:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.total {
+  margin-top: 0.75rem;
+  font-weight: 600;
+  text-align: right;
+  color: #2e7d32;
+  font-size: 0.95rem;
+}
   .sr-only {
     position: absolute;
     width: 1px;

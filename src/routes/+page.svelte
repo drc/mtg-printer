@@ -9,7 +9,13 @@
   let queue: CardSummary[] = [];
   let status = "";
   let error = "";
-  let busy = false;
+  function formatCartTotal(cards: CardSummary[]): string {
+    const total = cards.reduce((sum, card) => {
+      const price = parseFloat(card.price ?? "0");
+      return sum + (isNaN(price) ? 0 : price);
+    }, 0);
+    return total === 0 ? "—" : `$${total.toFixed(2)}`;
+  }
 
   function add(card: CardSummary) {
     queue = [...queue, card];
@@ -95,6 +101,9 @@
     }} />
   <CardListInput {busy} onadd={addList} />
   <CardUrlInput {busy} onadd={addUrl} />
+  {#if queue.length}
+    <p class="cart-total" aria-live="polite">Cart total: {formatCartTotal(queue)}</p>
+  {/if}
   <PrintQueue cards={queue} {busy} onremove={(index) => (queue = queue.filter((_, i) => i !== index))} onprint={print} />
   <p class="status" aria-live="polite">{status}</p>
   {#if error}<ErrorToast message={error} onclose={() => (error = "")} />{/if}
@@ -117,9 +126,16 @@
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
   }
-  h1 {
-    margin-bottom: 2rem;
-  }
+h1 {
+  margin-bottom: 2rem;
+}
+.cart-total {
+  font-weight: 600;
+  color: #2e7d32;
+  font-size: 1.05rem;
+  text-align: right;
+  margin: 0.5rem 0 0;
+}
   :global(section) {
     background: white;
     border: 1px solid #d8d2c6;
