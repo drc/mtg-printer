@@ -5,6 +5,7 @@
   export let mode: "select" | "remove" = "select";
   export let onclick: (() => void) | undefined = undefined;
   let imageFailed = false;
+  const formatPrice = (value: string | undefined) => (value === undefined ? "" : `$${Number(value).toFixed(2)}`);
 </script>
 
 {#if mode === "select"}
@@ -16,7 +17,7 @@
   <div class="card-preview">
     {#if imageFailed}<span class="image-fallback" aria-hidden="true">No image</span>{:else}<img src={card.preview_url} alt={card.name} loading="lazy" decoding="async" onerror={() => (imageFailed = true)} />{/if}
     <span>{card.name}<small>{card.set_name} · {card.collector_number}</small></span>
-    {#if card.price}<span class="price">${card.price}</span>{/if}
+    {#if card.price}<span class="price">{formatPrice(card.price)}</span>{/if}
     <button class="remove" aria-label={`Remove ${card.name}`} {onclick}>Remove</button>
   </div>
 {/if}
@@ -60,17 +61,20 @@
     color: #5f6368;
   }
   .remove {
-    margin-left: auto;
+    margin-left: 1.5rem;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
     border: 1px solid #777;
     border-radius: 4px;
     background: #fff;
   }
-.price {
-  margin-left: auto;
-  font-weight: 600;
-  color: #2e7d32;
-  font-size: 0.85rem;
-}
+  .price {
+    flex: 0 0 5.5rem;
+    margin-left: auto;
+    text-align: right;
+    font-weight: 600;
+    color: #2e7d32;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
 </style>

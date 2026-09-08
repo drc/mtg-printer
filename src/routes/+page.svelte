@@ -104,7 +104,7 @@
   <CardListInput {busy} onadd={addList} />
   <CardUrlInput {busy} onadd={addUrl} />
   {#if queue.length}
-    <p class="cart-total" aria-live="polite">Discount: {formatCartTotal(queue)} · Total: $0.00</p>
+    <p class="cart-total" aria-live="polite"><span class="discount">Discount: {formatCartTotal(queue)}</span><span class="final-total">Total: $0.00</span></p>
   {/if}
   <PrintQueue cards={queue} {busy} onremove={(index) => (queue = queue.filter((_, i) => i !== index))} onprint={print} />
   <p class="status" aria-live="polite">{status}</p>
@@ -132,11 +132,25 @@ h1 {
   margin-bottom: 2rem;
 }
 .cart-total {
-  font-weight: 600;
-  color: #2e7d32;
-  font-size: 1.05rem;
-  text-align: right;
-  margin: 0.5rem 0 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.discount {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid #f59e0b;
+  border-radius: 999px;
+  background: #fffbeb;
+  color: #92400e;
+  font-weight: 700;
+}
+.final-total {
+  color: #166534;
+  font-size: 1.2rem;
+  font-weight: 800;
 }
   :global(section) {
     background: white;

@@ -31,8 +31,7 @@
   {:else}
     <p>No cards queued.</p>
   {/if}
-  <p class="discount" aria-live="polite">Discount: {formatTotal(cards)}</p>
-  <p class="total" aria-live="polite">Total: $0.00</p>
+  <p class="summary" aria-live="polite"><span class="discount">Discount: {formatTotal(cards)}</span><span class="total">Total: $0.00</span></p>
   <button class="print" onclick={onprint} disabled={busy || !cards.length}>{busy ? "Printing…" : "Print queue"}</button>
 </section>
 
@@ -59,17 +58,27 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
-.discount {
-  margin: 0.75rem 0 0;
-  text-align: right;
-}
-.total {
-  margin: 0.15rem 0 0;
-  font-weight: 600;
-  text-align: right;
-  color: #2e7d32;
-  font-size: 0.95rem;
-}
+  .summary {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.75rem 0 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .discount {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid #f59e0b;
+    border-radius: 999px;
+    background: #fffbeb;
+    color: #92400e;
+    font-weight: 700;
+  }
+  .total {
+    color: #166534;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
   .sr-only {
     position: absolute;
     width: 1px;
