@@ -177,6 +177,7 @@ h1 {
     font: inherit;
   }
   :global(section > form button) {
+    margin-top: 0.75rem;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
     border: 1px solid #777;

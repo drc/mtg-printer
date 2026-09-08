@@ -25,8 +25,3 @@
   </form>
 
 </section>
-<style>
-  .link-form button {
-    margin-top: 0.75rem;
-  }
-</style>
