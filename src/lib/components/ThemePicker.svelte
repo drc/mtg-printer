@@ -24,7 +24,6 @@
 </script>
 
 <div class="theme-picker" role="group" aria-label="Color theme">
-  <span class="theme-label">Theme</span>
   <div class="theme-buttons">
     {#each ["system", "light", "dark"] as option}
       <button
@@ -42,16 +41,6 @@
   .theme-picker {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-  .theme-label {
-    color: var(--muted);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
   .theme-buttons {
     display: flex;

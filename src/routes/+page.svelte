@@ -95,8 +95,10 @@
 </svelte:head>
 
 <main aria-busy={busy}>
-  <ThemePicker />
-  <h1>MTG Proxy Printer</h1>
+  <div class="page-header">
+    <h1>MTG Proxy Printer</h1>
+    <ThemePicker />
+  </div>
   <CardSearch
     onselect={add}
     onerror={(message) => {
@@ -184,9 +186,16 @@
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
   }
-h1 {
-  margin-bottom: 2rem;
-}
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  h1 {
+    margin: 0;
+  }
 .cart-total {
   display: flex;
   justify-content: flex-end;
