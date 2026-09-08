@@ -4,7 +4,7 @@
 
   export let cards: CardSummary[] = [];
   export let busy = false;
-  export let onprint: () => void;
+  export let onremove: (index: number) => void;
   function formatTotal(cards: CardSummary[]): string {
     const total = cards.reduce((sum, card) => {
       const price = parseFloat(card.price ?? "0");
