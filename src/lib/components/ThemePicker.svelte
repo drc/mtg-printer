@@ -4,6 +4,7 @@
   type Theme = "system" | "light" | "dark";
   const STORAGE_KEY = "mtg-theme";
   let theme: Theme = "system";
+  let ready = false;
 
   function applyTheme(value: Theme) {
     theme = value;
@@ -20,11 +21,12 @@
     if (saved === "light" || saved === "dark") {
       applyTheme(saved);
     }
+    ready = true;
   });
 </script>
 
 <div class="theme-picker" role="group" aria-label="Color theme">
-  <div class="theme-buttons">
+  <div class="theme-buttons" class:ready>
     {#each ["system", "light", "dark"] as option}
       <button
         type="button"
@@ -49,6 +51,10 @@
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--surface-muted);
+    visibility: hidden;
+  }
+  .theme-buttons.ready {
+    visibility: visible;
   }
   button {
     cursor: pointer;
