@@ -4,6 +4,7 @@
   import CardSearch from "$lib/components/CardSearch.svelte";
   import CardUrlInput from "$lib/components/CardUrlInput.svelte";
   import PrintQueue from "$lib/components/PrintQueue.svelte";
+  import ThemePicker from "$lib/components/ThemePicker.svelte";
   import ErrorToast from "$lib/components/ErrorToast.svelte";
 
   let queue: CardSummary[] = [];
@@ -94,7 +95,10 @@
 </svelte:head>
 
 <main aria-busy={busy}>
-  <h1>MTG Proxy Printer</h1>
+  <div class="page-header">
+    <h1>MTG Proxy Printer</h1>
+    <ThemePicker />
+  </div>
   <CardSearch
     onselect={add}
     onerror={(message) => {
@@ -110,8 +114,62 @@
   <p class="status" aria-live="polite">{status}</p>
   {#if error}<ErrorToast message={error} onclose={() => (error = "")} />{/if}
 </main>
-
 <style>
+:global(:root) {
+  color-scheme: light;
+  --page: #f4f1ea;
+  --surface: #ffffff;
+  --surface-muted: #ece9e2;
+  --text: #17202a;
+  --muted: #5f6368;
+  --border: #d8d2c6;
+  --field-border: #aaa;
+  --accent: #1769aa;
+  --deal: #92400e;
+  --deal-bg: #fffbeb;
+  --success: #166534;
+  --error-border: #9b1c1c;
+  --error-bg: #fff5f5;
+  --error-text: #651313;
+}
+:global(:root[data-theme="dark"]) {
+  color-scheme: dark;
+  --page: #101820;
+  --surface: #18232d;
+  --surface-muted: #23313d;
+  --text: #eef2f4;
+  --muted: #aeb9c2;
+  --border: #3b4a56;
+  --field-border: #627382;
+  --accent: #75b9f0;
+  --deal: #fbbf24;
+  --deal-bg: #3a2d10;
+  --deal-border: #b7791f;
+  --success: #86efac;
+  --error-border: #f87171;
+  --error-bg: #3b1f24;
+  --error-text: #fecaca;
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme])) {
+    color-scheme: dark;
+    --page: #101820;
+    --surface: #18232d;
+    --surface-muted: #23313d;
+    --text: #eef2f4;
+    --muted: #aeb9c2;
+    --border: #3b4a56;
+    --field-border: #627382;
+    --accent: #75b9f0;
+    --deal: #fbbf24;
+    --deal-bg: #3a2d10;
+    --deal-border: #b7791f;
+    --success: #86efac;
+    --error-border: #f87171;
+    --error-bg: #3b1f24;
+    --error-text: #fecaca;
+  }
+}
   :global(*) {
     box-sizing: border-box;
   }
@@ -120,17 +178,24 @@
     font:
       16px/1.4 system-ui,
       sans-serif;
-    color: #17202a;
-    background: #f4f1ea;
+    color: var(--text);
+    background: var(--page);
   }
   main {
     max-width: 700px;
     margin: 0 auto;
     padding: 2rem 1rem 4rem;
   }
-h1 {
-  margin-bottom: 2rem;
-}
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  h1 {
+    margin: 0;
+  }
 .cart-total {
   display: flex;
   justify-content: flex-end;
@@ -141,20 +206,19 @@ h1 {
 }
 .discount {
   padding: 0.35rem 0.65rem;
-  border: 1px solid #f59e0b;
-  border-radius: 999px;
-  background: #fffbeb;
-  color: #92400e;
+  border: 1px solid var(--deal-border);
+  background: var(--deal-bg);
+  color: var(--deal);
   font-weight: 700;
 }
 .final-total {
-  color: #166534;
+  color: var(--success);
   font-size: 1.2rem;
   font-weight: 800;
 }
   :global(section) {
-    background: white;
-    border: 1px solid #d8d2c6;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1rem;
     margin: 1rem 0;
@@ -173,7 +237,7 @@ h1 {
     display: block;
     width: 100%;
     padding: 0.65rem;
-    border: 1px solid #aaa;
+    border: 1px solid var(--field-border);
     border-radius: 4px;
     font: inherit;
   }
@@ -181,14 +245,15 @@ h1 {
     margin-top: 0.75rem;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
-    border: 1px solid #777;
+    border: 1px solid var(--field-border);
     border-radius: 4px;
-    background: #fff;
+    background: var(--surface-muted);
+    color: var(--text);
   }
   :global(button:focus-visible),
   :global(input:focus-visible),
   :global(textarea:focus-visible) {
-    outline: 3px solid #1769aa;
+    outline: 3px solid var(--accent);
     outline-offset: 2px;
   }
   :global(button:disabled) {

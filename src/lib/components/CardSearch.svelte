@@ -91,7 +91,7 @@
     margin: 0.75rem 0 0;
   }
   .results li + li {
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border);
   }
   .sr-only {
     position: absolute;

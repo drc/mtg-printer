@@ -42,17 +42,17 @@
     margin: 0.75rem 0 0;
   }
   .queue li + li {
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border);
   }
 .print {
   margin-top: 1rem;
   width: 100%;
   cursor: pointer;
   padding: 0.55rem 0.8rem;
-  border: 1px solid #777;
+  border: 1px solid var(--field-border);
   border-radius: 4px;
-  background: #17202a;
-  color: white;
+  background: var(--text);
+  color: var(--surface);
 }
 .print:disabled {
   cursor: not-allowed;
@@ -68,14 +68,13 @@
   }
   .discount {
     padding: 0.35rem 0.65rem;
-    border: 1px solid #f59e0b;
-    border-radius: 999px;
-    background: #fffbeb;
-    color: #92400e;
+    border: 1px solid var(--deal-border);
+    background: var(--deal-bg);
+    color: var(--deal);
     font-weight: 700;
   }
   .total {
-    color: #166534;
+    color: var(--success);
     font-size: 1.1rem;
     font-weight: 800;
   }

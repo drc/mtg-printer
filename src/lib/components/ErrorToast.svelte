@@ -17,11 +17,11 @@
     z-index: 10;
     width: min(28rem, calc(100vw - 2rem));
     padding: 1rem;
-    border: 2px solid #9b1c1c;
+    border: 2px solid var(--error-border);
     border-radius: 8px;
-    background: #fff5f5;
-    color: #651313;
-    box-shadow: 0 4px 18px #0003;
+    background: var(--error-bg);
+    color: var(--error-text);
+    box-shadow: 0 4px 18px rgb(0 0 0 / 25%);
   }
   p {
     margin: 0.35rem 0 0.75rem;
@@ -29,13 +29,13 @@
   button {
     cursor: pointer;
     padding: 0.45rem 0.7rem;
-    border: 1px solid #651313;
+    border: 1px solid var(--error-text);
     border-radius: 4px;
-    background: #651313;
-    color: white;
+    background: var(--error-text);
+    color: var(--surface);
   }
   button:focus-visible {
-    outline: 3px solid #1769aa;
+    outline: 3px solid var(--accent);
     outline-offset: 2px;
   }
 </style>
