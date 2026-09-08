@@ -102,6 +102,7 @@
       status = "";
     }} />
   <CardListInput {busy} onadd={addList} />
+  <CardUrlInput {busy} onadd={addUrl} />
   {#if queue.length}
     <p class="cart-total" aria-live="polite">Estimated resale value: {formatCartTotal(queue)}</p>
   {/if}
