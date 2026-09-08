@@ -69,7 +69,7 @@
   async function print() {
     busy = true;
     error = "";
-    status = "Printing…";
+    status = "Printing… your total is about to become $0.00.";
     try {
       const response = await fetch("/api/print", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ids: queue.map((card) => card.id) }) });
       const body = await response.json();
@@ -77,7 +77,7 @@
         throw new Error(body.error ?? "Print failed");
       }
       queue = [];
-      status = `Printed ${body.printed} card(s).`;
+      status = `Printed ${body.printed} card(s). Cost: $0.00. The printer accepts jokes as payment.`;
     } catch (cause) {
       error = cause instanceof Error ? cause.message : "Print failed";
       status = "";

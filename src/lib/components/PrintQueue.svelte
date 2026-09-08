@@ -5,6 +5,7 @@
   export let cards: CardSummary[] = [];
   export let busy = false;
   export let onremove: (index: number) => void;
+  export let onprint: () => void;
   function formatTotal(cards: CardSummary[]): string {
     const total = cards.reduce((sum, card) => {
       const price = parseFloat(card.price ?? "0");
@@ -31,7 +32,7 @@
     <p>No cards queued.</p>
   {/if}
   <p class="total" aria-live="polite">Total: {formatTotal(cards)}</p>
-  <button class="print" onclick={onprint} disabled={busy || !cards.length}>Print queue</button>
+  <button class="print" onclick={onprint} disabled={busy || !cards.length}>{busy ? "Printing… (free!)" : "Print queue"}</button>
 </section>
 
 <style>
