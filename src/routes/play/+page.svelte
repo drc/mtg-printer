@@ -34,6 +34,7 @@
   function random() { return crypto.getRandomValues(new Uint32Array(1))[0]; }
   function act(fn: () => SessionState) { if (!session) return; try { persist(fn()); } catch (cause) { error = cause instanceof Error ? cause.message : "Action failed"; } }
   function cardsIn(deckId: string, zone: ZoneName): CardInstance[] { if (!session) return []; return (session.decks[deckId]?.[zone] ?? []).map((id) => session!.cards[id]).filter(Boolean); }
+  function cardMeta(card: CardInstance) { return `${card.name} · #${card.cardNumber}/100`; }
   function privateCardMeta(card: CardInstance) { return `Card #${card.cardNumber}/100 · ${card.instanceId.slice(-8)}`; }
   async function printCards(cards: CardInstance[], successMessage: string) {
     if (!session || !cards.length) return;
