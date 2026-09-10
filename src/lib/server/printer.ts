@@ -2,7 +2,7 @@ import net from "node:net";
 import { createCanvas, loadImage } from "canvas";
 import ReceiptPrinterEncoder from "@point-of-sale/receipt-printer-encoder";
 import { fetchCardImage, type CardRecord } from "./scryfall.js";
-import { CARD_HEIGHT, CARD_WIDTH, renderCard } from "./render-card.js";
+import { CARD_HEIGHT, CARD_WIDTH, renderCard, type CardRenderMetadata } from "./render-card.js";
 
 export const PRINTER_HOST = process.env.PRINTER_HOST ?? "10.0.1.128";
 export const PRINTER_PORT = Number(process.env.PRINTER_PORT ?? 9100);
@@ -36,8 +36,10 @@ function send(data: Uint8Array): Promise<void> {
     socket.setTimeout(10_000);
   });
 }
-export async function printCard(card: CardRecord): Promise<void> {
-  const rendered = await renderCard(await fetchCardImage(card));
+export type PrintJob = { card: CardRecord; metadata?: CardRenderMetadata };
+
+export async function printCard(card: CardRecord, metadata?: CardRenderMetadata): Promise<void> {
+  const rendered = await renderCard(await fetchCardImage(card), metadata);
   const image = await loadImage(rendered);
   const encoder = new ReceiptPrinterEncoder({
     createCanvas: printerCanvas,
@@ -47,10 +49,10 @@ export async function printCard(card: CardRecord): Promise<void> {
   const data = encoder.align("center").image(image, CARD_WIDTH, CARD_HEIGHT, "atkinson").cut().encode();
   await send(data);
 }
-export function enqueuePrint(cards: CardRecord[]): Promise<void> {
+export function enqueuePrint(cards: CardRecord[], metadata?: CardRenderMetadata[]): Promise<void> {
   const job = queue.then(async () => {
-    for (const card of cards) {
-      await printCard(card);
+    for (const [index, card] of cards.entries()) {
+      await printCard(card, metadata?.[index]);
     }
   });
   queue = job.catch(() => undefined);

@@ -5,8 +5,8 @@ WORKDIR /app
 # binaries on the installed platform unless prebuilts are available
 # libexpat1: bun 1.4 dynamically links libexpat.so.1, absent from the base image
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends build-essential libexpat1 pkg-config \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends libexpat1 curl \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
@@ -16,8 +16,8 @@ RUN bun run prepare && bun run build
 
 FROM oven/bun:1.4-debian AS runtime
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libexpat1 \
-	&& rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends libexpat1 curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 ENV NODE_ENV=production

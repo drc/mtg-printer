@@ -102,6 +102,31 @@ export async function fetchCardImage(card: CardRecord): Promise<Uint8Array> {
   }
   return new Uint8Array(await response.arrayBuffer());
 }
+export async function resolveCardNamesBulk(names: string[]): Promise<CardRecord[]> {
+  const clean = [...new Set(names.map((name) => name.trim()).filter(Boolean))];
+  const cards: CardRecord[] = [];
+  for (let index = 0; index < clean.length; index += 75) {
+    const response = await fetch(`${API}/cards/collection`, {
+      method: "POST",
+      headers: { "User-Agent": USER_AGENT, Accept: "application/json", "content-type": "application/json" },
+      body: JSON.stringify({ identifiers: clean.slice(index, index + 75).map((name) => ({ name })) }),
+    });
+    if (!response.ok) throw new Error(`Scryfall request failed (${response.status})`);
+    const payload = await response.json() as { data?: unknown };
+    if (!Array.isArray(payload.data)) throw new Error("Scryfall returned malformed collection results");
+    for (const value of payload.data) {
+      const parsed = CardPayload.safeParse(value);
+      if (!parsed.success) throw new Error("Scryfall returned an incomplete card response");
+      cards.push(normalize(parsed.data));
+    }
+  }
+  const found = new Set(cards.map((card) => card.name.toLowerCase()));
+  const missing = clean.filter((name) => !found.has(name.toLowerCase()));
+  if (missing.length) cards.push(...await resolveCardNames(missing));
+  if (cards.length !== clean.length) throw new Error("Scryfall could not resolve every card");
+  return cards;
+}
+
 
 const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
