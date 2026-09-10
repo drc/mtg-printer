@@ -12,8 +12,6 @@
   let status = "";
   let search: Record<string, string> = {};
   let confirmReset = false;
-  let deckEntries: [string, SessionState["decks"][string]][] = [];
-  $: deckEntries = session ? Object.entries(session.decks) as [string, SessionState["decks"][string]][] : [];
 
   function validState(value: unknown): value is SessionState {
     if (!value || typeof value !== "object") return false;
@@ -114,9 +112,9 @@
       <button class="primary" type="submit" disabled={busy}>{busy ? "Importing…" : "Import decks"}</button>
     </form><p class="status" aria-live="polite">{status}</p></section>
   {:else}
-    <section class="session-strip"><div><strong>{deckEntries.length} decks in play</strong><span> · {Object.keys(session.cards).length} tracked card instances</span></div><span class="status" aria-live="polite">{status}</span></section>
+    <section class="session-strip"><div><strong>{Object.keys(session.decks).length} decks in play</strong><span> · {Object.keys(session.cards).length} tracked card instances</span></div><span class="status" aria-live="polite">{status}</span></section>
     <div class="deck-grid">
-      {#each deckEntries as [deckId, zones]}
+      {#each Object.entries(session.decks) as [deckId, zones]}
         {@const deckCards = Object.values(session.cards).filter((card) => card.deckId === deckId)}
         <section class="deck-panel" aria-labelledby={`deck-${deckId}`}>
           <div class="deck-heading"><div><p class="eyebrow">DECK {deckCards[0]?.deckName ?? deckId}</p><h2 id={`deck-${deckId}`}>{deckCards.length} cards · {zones.library.length} library</h2></div><span class="deck-id">{deckId}</span></div>
